@@ -1,0 +1,28 @@
+/* Importando as fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Bungee+Tint&family=Geologica:wght@300;400;500;600;700&family=League+Script&display=swap');
+
+/* Definindo as variáveis de fonte */
+:root {
+  --font-primary: 'Quicksand', sans-serif;
+  --font-title: 'Bungee Tint', cursive;
+  --font-tabs: 'Geologica', sans-serif;
+}
+
+/* Aplicando a fonte globalmente */
+body {
+  font-family: var(--font-primary);
+}
+
+/* Estilo específico para títulos */
+h1, .MuiTypography-h4 {
+  font-family: var(--font-title) !important;
+}
+
+/* Estilo específico para as abas */
+.MuiTab-root {
+  font-family: var(--font-tabs) !important;
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
