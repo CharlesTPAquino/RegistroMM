@@ -4,15 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    port: 3010,
-    strictPort: true,
-    host: true
-  },
-  preview: {
-    port: 3010,
-    strictPort: true,
-    host: true
-  },
   base: '/RegistroMM/',
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'terser',
+    emptyOutDir: true
+  }
 })
