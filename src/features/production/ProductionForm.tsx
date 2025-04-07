@@ -22,8 +22,6 @@ export const ProductionForm: React.FC<ProductionFormProps> = ({
   onChange
 }) => {
   const [localRecord, setLocalRecord] = useState<Partial<ProductionRecord>>(record);
-  const [localEmployees, setLocalEmployees] = useState<Employee[]>(employees);
-  const [localProducts, setLocalProducts] = useState<Product[]>(products);
   const [localLoading, setLocalLoading] = useState<boolean>(loading);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -60,11 +58,8 @@ export const ProductionForm: React.FC<ProductionFormProps> = ({
               onChange={(e) => setLocalRecord({ ...localRecord, employee_id: e.target.value })}
               label="Funcionário"
             >
-              {localEmployees.map((employee) => (
-                <MenuItem key={employee.id} value={employee.id}>
-                  {employee.name}
-                </MenuItem>
-              ))}
+              <MenuItem value="1">Funcionário 1</MenuItem>
+              <MenuItem value="2">Funcionário 2</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -76,11 +71,8 @@ export const ProductionForm: React.FC<ProductionFormProps> = ({
               onChange={(e) => setLocalRecord({ ...localRecord, product_id: e.target.value })}
               label="Produto"
             >
-              {localProducts.map((product) => (
-                <MenuItem key={product.id} value={product.id}>
-                  {product.name}
-                </MenuItem>
-              ))}
+              <MenuItem value="1">Produto 1</MenuItem>
+              <MenuItem value="2">Produto 2</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -98,6 +90,16 @@ export const ProductionForm: React.FC<ProductionFormProps> = ({
               <MenuItem value="finalizado">Finalizado</MenuItem>
             </Select>
           </FormControl>
+        </Box>
+        <Box sx={{ gridColumn: { xs: '1', md: '1 / span 2' } }}>
+          <TextField
+            fullWidth
+            label="Quantidade"
+            type="number"
+            value={localRecord.quantity || ''}
+            onChange={(e) => setLocalRecord({ ...localRecord, quantity: Number(e.target.value) })}
+            sx={{ mb: 2 }}
+          />
         </Box>
         <Box sx={{ gridColumn: { xs: '1', md: '1 / span 2' } }}>
           <Button
