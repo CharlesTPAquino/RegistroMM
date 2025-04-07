@@ -5,9 +5,7 @@ export interface ProductionRecord {
   order_number: string;
   batch_number: string;
   status: 'produzindo' | 'sendo separado' | 'parado' | 'finalizado';
-  created_at?: string;
-  employees?: { name: string };
-  products?: { name: string };
-  employee_name?: string;
-  product_name?: string;
+  start_time: string;
+  end_time?: string;
+  quantity: number;
 }

@@ -1,10 +1,8 @@
-import React from 'react';
-import { Box, TextField } from '@mui/material';
-import { Select } from '../../components/forms/Select';
-import { SaveButton } from '../../components/buttons/SaveButton';
-import { ProductionRecord } from '../../types/ProductionRecord';
+import React, { useState } from 'react';
+import { Box, TextField, Select, MenuItem, Button, FormControl, InputLabel } from '@mui/material';
 import { Employee } from '../../types/Employee';
 import { Product } from '../../types/Product';
+import { ProductionRecord } from '../../types/ProductionRecord';
 
 interface ProductionFormProps {
   record: Partial<ProductionRecord>;
@@ -23,20 +21,25 @@ export const ProductionForm: React.FC<ProductionFormProps> = ({
   onSubmit,
   onChange
 }) => {
+  const [localRecord, setLocalRecord] = useState<Partial<ProductionRecord>>(record);
+  const [localEmployees, setLocalEmployees] = useState<Employee[]>(employees);
+  const [localProducts, setLocalProducts] = useState<Product[]>(products);
+  const [localLoading, setLocalLoading] = useState<boolean>(loading);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(record);
+    onSubmit(localRecord);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600, mx: 'auto', mt: 4 }}>
       <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' } }}>
         <Box>
           <TextField
             fullWidth
             label="Número da Ordem"
-            value={record.order_number || ''}
-            onChange={(e) => onChange('order_number', e.target.value)}
+            value={localRecord.order_number || ''}
+            onChange={(e) => setLocalRecord({ ...localRecord, order_number: e.target.value })}
             required
           />
         </Box>
@@ -44,58 +47,70 @@ export const ProductionForm: React.FC<ProductionFormProps> = ({
           <TextField
             fullWidth
             label="Número do Lote"
-            value={record.batch_number || ''}
-            onChange={(e) => onChange('batch_number', e.target.value)}
+            value={localRecord.batch_number || ''}
+            onChange={(e) => setLocalRecord({ ...localRecord, batch_number: e.target.value })}
             required
           />
         </Box>
         <Box>
-          <Select
-            label="Funcionário"
-            value={record.employee_id || ''}
-            onChange={(e) => onChange('employee_id', e.target.value)}
-            options={employees.map(emp => ({
-              value: emp.id,
-              label: emp.name
-            }))}
-            required
-          />
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel>Funcionário</InputLabel>
+            <Select
+              value={localRecord.employee_id || ''}
+              onChange={(e) => setLocalRecord({ ...localRecord, employee_id: e.target.value })}
+              label="Funcionário"
+            >
+              {localEmployees.map((employee) => (
+                <MenuItem key={employee.id} value={employee.id}>
+                  {employee.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
         <Box>
-          <Select
-            label="Produto"
-            value={record.product_id || ''}
-            onChange={(e) => onChange('product_id', e.target.value)}
-            options={products.map(prod => ({
-              value: prod.id,
-              label: prod.name
-            }))}
-            required
-          />
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel>Produto</InputLabel>
+            <Select
+              value={localRecord.product_id || ''}
+              onChange={(e) => setLocalRecord({ ...localRecord, product_id: e.target.value })}
+              label="Produto"
+            >
+              {localProducts.map((product) => (
+                <MenuItem key={product.id} value={product.id}>
+                  {product.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
         <Box>
-          <Select
-            label="Status"
-            value={record.status || ''}
-            onChange={(e) => onChange('status', e.target.value)}
-            options={[
-              { value: 'produzindo', label: 'Produzindo' },
-              { value: 'sendo separado', label: 'Sendo Separado' },
-              { value: 'parado', label: 'Parado' },
-              { value: 'finalizado', label: 'Finalizado' }
-            ]}
-            required
-          />
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel>Status</InputLabel>
+            <Select
+              value={localRecord.status || ''}
+              onChange={(e) => setLocalRecord({ ...localRecord, status: e.target.value as ProductionRecord['status'] })}
+              label="Status"
+            >
+              <MenuItem value="produzindo">Produzindo</MenuItem>
+              <MenuItem value="sendo separado">Sendo Separado</MenuItem>
+              <MenuItem value="parado">Parado</MenuItem>
+              <MenuItem value="finalizado">Finalizado</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
         <Box sx={{ gridColumn: { xs: '1', md: '1 / span 2' } }}>
-          <SaveButton
-            loading={loading}
-            actionText={record.id ? 'Atualizar' : 'Criar'}
+          <Button
             type="submit"
+            variant="contained"
+            color="primary"
             fullWidth
-          />
+            disabled={localLoading}
+          >
+            {localLoading ? 'Salvando...' : 'Salvar'}
+          </Button>
         </Box>
       </Box>
-    </form>
+    </Box>
   );
 };
