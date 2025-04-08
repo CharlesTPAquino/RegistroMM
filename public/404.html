@@ -5,16 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecionando...</title>
   <script>
-    // Pega o caminho atual da URL
-    var pathSegments = window.location.pathname.split('/');
-    var repoName = 'RegistroMM';
-    var path = pathSegments.slice(pathSegments.indexOf(repoName) + 1).join('/');
-    
-    // Salva o caminho atual para ser restaurado após o redirecionamento
-    sessionStorage.setItem('redirect', window.location.href);
-    
-    // Redireciona para a página principal com hash router
-    window.location.replace(window.location.origin + '/' + repoName + '/#/' + path);
+    // Função para redirecionar para a página principal
+    (function() {
+      var segmentCount = 1;
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+        l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    })();
   </script>
 </head>
 <body>
