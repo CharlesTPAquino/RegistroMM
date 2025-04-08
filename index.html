@@ -7,12 +7,10 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hzvxhnyutxqcixfteygs.supabase.co; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://hzvxhnyutxqcixfteygs.supabase.co wss://hzvxhnyutxqcixfteygs.supabase.co;">
     <title>Registro MM</title>
     <script>
-      // Polyfill para localStorage quando não estiver disponível (como em iframes com restrições)
+      // Polyfill para localStorage quando não estiver disponível
       try {
-        // Tenta acessar o localStorage
         window.localStorage.getItem('test');
       } catch (e) {
-        // Se falhar, cria um polyfill
         console.log('Criando polyfill para localStorage');
         var memoryStorage = {};
         Object.defineProperty(window, 'localStorage', {
@@ -36,7 +34,6 @@
     </script>
     <!-- Código para lidar com rotas no GitHub Pages -->
     <script type="text/javascript">
-      // Código para garantir que o GitHub Pages funcione com rotas do React Router
       (function() {
         // Se não estamos no GitHub Pages, não fazemos nada
         if (window.location.hostname !== 'charlestpaquino.github.io') return;
