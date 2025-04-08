@@ -1,40 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro MM</title>
-    <script>
-      // Verifica se há um redirecionamento salvo na sessão
-      (function() {
-        // Script para lidar com redirecionamentos do GitHub Pages
-        var redirect = sessionStorage.getItem('redirect');
-        if (redirect && redirect !== window.location.href) {
-          // Limpa o redirecionamento salvo
-          sessionStorage.removeItem('redirect');
-          // Extrai o caminho do redirecionamento
-          var url = new URL(redirect);
-          var path = url.pathname.split('/').slice(2).join('/');
-          // Navega para o caminho correto usando o hash router
-          if (path) {
-            window.location.replace(window.location.origin + window.location.pathname + '#/' + path);
-          }
-        }
-
-        // Lidar com o redirecionamento do GitHub Pages
-        var p = window.location.search.match(/\?p=(.*)/);
-        if (p && p[1]) {
-          // Redirecionar para a rota correta usando o hash router
-          window.location.replace(window.location.origin + window.location.pathname.split('?')[0] + '#/' + p[1]);
-        }
-      })();
-    </script>
-    <script type="module" crossorigin src="/RegistroMM/assets/index.a2207076.js"></script>
-    <link rel="stylesheet" href="/RegistroMM/assets/index.4d07a41d.css">
-  </head>
-  <body>
-    <div id="root"></div>
-    
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecionando...</title>
+  <script>
+    // Função para redirecionar para a página principal
+    (function() {
+      var segmentCount = 1;
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+        l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    })();
+  </script>
+</head>
+<body>
+  <div style="text-align: center; font-family: Arial, sans-serif; margin-top: 50px;">
+    <h1>Redirecionando...</h1>
+    <p>Você será redirecionado para a página principal em instantes.</p>
+  </div>
+</body>
 </html>
