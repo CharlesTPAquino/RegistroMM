@@ -8,6 +8,7 @@
     <script>
       // Verifica se há um redirecionamento salvo na sessão
       (function() {
+        // Script para lidar com redirecionamentos do GitHub Pages
         var redirect = sessionStorage.getItem('redirect');
         if (redirect && redirect !== window.location.href) {
           // Limpa o redirecionamento salvo
@@ -19,6 +20,13 @@
           if (path) {
             window.location.replace(window.location.origin + window.location.pathname + '#/' + path);
           }
+        }
+
+        // Lidar com o redirecionamento do GitHub Pages
+        var p = window.location.search.match(/\?p=(.*)/);
+        if (p && p[1]) {
+          // Redirecionar para a rota correta usando o hash router
+          window.location.replace(window.location.origin + window.location.pathname.split('?')[0] + '#/' + p[1]);
         }
       })();
     </script>
