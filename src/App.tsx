@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { ThemeProvider, CssBaseline, Box, Container, Paper, PaletteMode, useMediaQuery } from '@mui/material';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { getTheme } from './theme';
 import { ProductionPage } from './features/production/ProductionPage';
 import { EmployeeList } from './features/employee/EmployeeList';
@@ -154,7 +154,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router basename="/">
+      <Router>
         <Box 
           sx={{ 
             minHeight: '100vh',
