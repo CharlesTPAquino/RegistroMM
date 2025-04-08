@@ -1,0 +1,285 @@
+/* Estilos para o tema escuro e animações */
+
+:root {
+  /* Cores para o tema escuro */
+  --color-dark-bg: #121212;
+  --color-dark-surface: #1E1E1E;
+  --color-dark-paper: #242424;
+  --color-dark-primary: #6EA8FF;
+  --color-dark-secondary: #3A506B;
+  --color-dark-accent: #FF7A7E;
+  --color-dark-text: #E0E0E0;
+  --color-dark-text-secondary: #A0A0A0;
+  --color-dark-border: rgba(255, 255, 255, 0.1);
+  --color-dark-hover: rgba(255, 255, 255, 0.05);
+  --color-dark-active: rgba(255, 255, 255, 0.1);
+  
+  /* Sombras para o tema escuro */
+  --shadow-dark-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-dark-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-dark-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  
+  /* Transições */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* Transições globais */
+* {
+  transition: background-color var(--transition-normal), 
+              color var(--transition-normal), 
+              border-color var(--transition-normal),
+              box-shadow var(--transition-normal);
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { 
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from { 
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(110, 168, 255, 0.5); }
+  50% { box-shadow: 0 0 15px rgba(110, 168, 255, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(110, 168, 255, 0.5); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-normal) ease-in;
+}
+
+.slide-in-up {
+  animation: slideInUp var(--transition-normal) ease-out;
+}
+
+.slide-in-right {
+  animation: slideInRight var(--transition-normal) ease-out;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+.glow {
+  animation: glow 2s infinite;
+}
+
+/* Efeitos de hover melhorados */
+.hover-lift {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.dark-mode .hover-lift:hover {
+  box-shadow: var(--shadow-dark-md);
+}
+
+/* Estilos específicos para o tema escuro */
+.dark-mode {
+  background-color: var(--color-dark-bg);
+  color: var(--color-dark-text);
+}
+
+.dark-mode .MuiPaper-root {
+  background-color: var(--color-dark-paper);
+  color: var(--color-dark-text);
+  box-shadow: var(--shadow-dark-md);
+}
+
+.dark-mode .MuiCard-root {
+  background-color: var(--color-dark-surface);
+  border: 1px solid var(--color-dark-border);
+}
+
+.dark-mode .MuiAppBar-root {
+  background-color: var(--color-dark-bg);
+}
+
+.dark-mode .MuiTableCell-root {
+  border-bottom-color: var(--color-dark-border);
+}
+
+.dark-mode .MuiDivider-root {
+  background-color: var(--color-dark-border);
+}
+
+.dark-mode .MuiChip-outlined {
+  border-color: var(--color-dark-border);
+}
+
+.dark-mode .MuiChip-filled {
+  background-color: var(--color-dark-active);
+}
+
+/* Melhorias para componentes específicos no modo escuro */
+.dark-mode .MuiTab-root {
+  color: var(--color-dark-text);
+}
+
+.dark-mode .MuiTab-root.Mui-selected {
+  color: var(--color-dark-primary);
+}
+
+.dark-mode .MuiTabs-indicator {
+  background-color: var(--color-dark-primary);
+}
+
+.dark-mode .MuiButton-contained {
+  box-shadow: var(--shadow-dark-sm);
+}
+
+.dark-mode .MuiButton-contained:hover {
+  box-shadow: var(--shadow-dark-md);
+}
+
+/* Efeitos de transição para cards */
+.card-transition {
+  transition: all var(--transition-normal);
+}
+
+.card-transition:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode .card-transition:hover {
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Estilos adicionais para o modo escuro */
+.dark-mode .MuiInputBase-root {
+  color: var(--color-dark-text);
+  border-color: var(--color-dark-border);
+}
+
+.dark-mode .MuiInputLabel-root {
+  color: var(--color-dark-text-secondary);
+}
+
+.dark-mode .MuiOutlinedInput-notchedOutline {
+  border-color: var(--color-dark-border);
+}
+
+.dark-mode .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--color-dark-primary);
+}
+
+.dark-mode .MuiIconButton-root {
+  color: var(--color-dark-text);
+}
+
+.dark-mode .MuiIconButton-root:hover {
+  background-color: var(--color-dark-hover);
+}
+
+/* Efeitos de foco para elementos interativos */
+.dark-mode .MuiButton-root:focus,
+.dark-mode .MuiIconButton-root:focus,
+.dark-mode .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  box-shadow: 0 0 0 2px var(--color-dark-primary);
+}
+
+/* Efeito de brilho para elementos destacados */
+.dark-mode .highlight-element {
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-mode .highlight-element::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(110, 168, 255, 0.1), 
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Estilização para scrollbars no modo escuro */
+.dark-mode ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark-mode ::-webkit-scrollbar-track {
+  background: var(--color-dark-surface);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  background-color: var(--color-dark-secondary);
+  border-radius: 4px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-dark-primary);
+}
+
+/* Melhorias para tabelas no modo escuro */
+.dark-mode .MuiTableContainer-root {
+  background-color: var(--color-dark-paper);
+}
+
+.dark-mode .MuiTableHead-root {
+  background-color: var(--color-dark-surface);
+}
+
+.dark-mode .MuiTableRow-root:hover {
+  background-color: var(--color-dark-hover);
+}
+
+/* Efeitos para cards no modo escuro */
+.dark-mode .stat-card {
+  background: linear-gradient(135deg, var(--color-dark-surface) 0%, rgba(62, 80, 107, 0.8) 100%);
+  border: 1px solid var(--color-dark-border);
+  transition: all var(--transition-normal);
+}
+
+.dark-mode .stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-dark-lg);
+  border-color: var(--color-dark-primary);
+}

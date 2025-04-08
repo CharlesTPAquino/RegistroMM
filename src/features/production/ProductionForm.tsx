@@ -5,27 +5,29 @@ import { Product } from '../../types/Product';
 import { ProductionRecord } from '../../types/ProductionRecord';
 
 interface ProductionFormProps {
-  record: Partial<ProductionRecord>;
-  employees: Employee[];
-  products: Product[];
-  loading: boolean;
-  onSubmit: (data: Partial<ProductionRecord>) => void;
-  onChange: (field: keyof ProductionRecord, value: any) => void;
+  record?: Partial<ProductionRecord>;
+  employees?: Employee[];
+  products?: Product[];
+  loading?: boolean;
+  onSubmit?: (data: Partial<ProductionRecord>) => void;
+  onChange?: (field: keyof ProductionRecord, value: any) => void;
 }
 
 export const ProductionForm: React.FC<ProductionFormProps> = ({
-  record,
-  employees,
-  products,
-  loading,
-  onSubmit,
-  onChange
+  record = {},
+  // Removendo as variáveis não utilizadas dos parâmetros
+  // employees = [],
+  // products = [],
+  loading = false,
+  onSubmit = () => console.log('Form submitted'),
+  // onChange = () => {}
 }) => {
   const [localRecord, setLocalRecord] = useState<Partial<ProductionRecord>>(record);
-  const [localLoading, setLocalLoading] = useState<boolean>(loading);
+  const [localLoading] = useState<boolean>(loading);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Submitting form with data:', localRecord);
     onSubmit(localRecord);
   };
 

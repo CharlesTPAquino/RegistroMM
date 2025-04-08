@@ -1,0 +1,129 @@
+/* Estilos para transições suaves entre temas */
+
+/* Classe aplicada temporariamente durante a transição de tema */
+.theme-transition * {
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              background-image 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Efeito de fade para o corpo da página durante a transição */
+.theme-transition body {
+  animation: themeFade 0.6s ease;
+}
+
+@keyframes themeFade {
+  0% { opacity: 0.8; }
+  50% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+/* Efeitos específicos para componentes durante a transição */
+.theme-transition .MuiPaper-root {
+  transition: background-color 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.theme-transition .MuiCard-root {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Efeito de ripple para o botão de alternância de tema */
+.dark-theme-toggle {
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-theme-toggle::after,
+.light-theme-toggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.dark-theme-toggle:active::after,
+.light-theme-toggle:active::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.7;
+  }
+  20% {
+    transform: scale(25, 25);
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(40, 40);
+  }
+}
+
+/* Efeito de escala para cards durante a transição */
+.theme-transition .MuiCard-root {
+  animation: cardScale 0.5s ease;
+}
+
+@keyframes cardScale {
+  0% { transform: scale(0.98); }
+  50% { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+
+/* Efeito de deslizamento para tabs durante a transição */
+.theme-transition .MuiTab-root {
+  animation: tabSlide 0.4s ease;
+}
+
+@keyframes tabSlide {
+  0% { transform: translateY(3px); opacity: 0.7; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Efeito para o indicador de tabs durante a transição */
+.theme-transition .MuiTabs-indicator {
+  animation: indicatorWidth 0.5s ease;
+}
+
+@keyframes indicatorWidth {
+  0% { opacity: 0; transform: scaleX(0.7); }
+  100% { opacity: 1; transform: scaleX(1); }
+}
+
+/* Efeito para textos durante a transição */
+.theme-transition h1,
+.theme-transition h2,
+.theme-transition h3,
+.theme-transition p {
+  animation: textFade 0.5s ease;
+}
+
+@keyframes textFade {
+  0% { opacity: 0.5; transform: translateY(2px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Efeito para botões durante a transição */
+.theme-transition .MuiButton-root {
+  animation: buttonPulse 0.5s ease;
+}
+
+@keyframes buttonPulse {
+  0% { transform: scale(0.97); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}

@@ -12,6 +12,7 @@ export async function updateProductionRecord(id: string, record: Partial<Product
 
 export async function deleteProductionRecord(id: string) {
   // TODO: Implementar chamada à API
+  console.log(`Deletando registro com ID: ${id}`);
   return true
 }
 

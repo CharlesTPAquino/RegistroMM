@@ -8,4 +8,5 @@ export interface ProductionRecord {
   start_time: string;
   end_time?: string;
   quantity: number;
+  observations?: string;
 }

@@ -111,8 +111,9 @@ body {
 .tabs-container {
   padding: 0.5rem 1.5rem;
   overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(74, 144, 226, 0.3) transparent;
+  /* Removendo propriedades não compatíveis */
+  /* scrollbar-width: thin; */
+  /* scrollbar-color: rgba(74, 144, 226, 0.3) transparent; */
 }
 
 .tabs-container::-webkit-scrollbar {
@@ -737,4 +738,123 @@ h2 {
   font-weight: 500 !important;
   min-width: 120px !important;
   padding: 0.75rem 1.5rem !important;
+}
+
+/* Estilos para o título da aplicação no TabMenu */
+.title-container {
+  padding: 1rem;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.title-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  color: var(--color-primary-dark);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.title-text.blue {
+  color: var(--color-primary);
+  font-size: 2.2rem;
+}
+
+@media (max-width: 768px) {
+  .title-text {
+    font-size: 1.4rem;
+  }
+  .title-text.blue {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title-text {
+    font-size: 1.2rem;
+  }
+  .title-text.blue {
+    font-size: 1.5rem;
+  }
+}
+
+/* Animações para a tabela de registros de produção */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.card-hover {
+  transition: all 0.2s ease;
+}
+
+.card-hover:hover {
+  background-color: rgba(74, 144, 226, 0.05) !important;
+}
+
+.button-hover {
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.button-hover::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.button-hover:hover::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+/* Estilo para status de produção */
+.status-chip-produzindo {
+  animation: pulse 2s infinite;
 }
