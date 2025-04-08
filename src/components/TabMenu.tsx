@@ -49,7 +49,7 @@ export function TabMenu() {
   }
 
   // Animações
-  const logoVariants = {
+  const titleVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: { 
       opacity: 1, 
@@ -126,35 +126,44 @@ export function TabMenu() {
         className="title-container"
         initial="hidden"
         animate="visible"
-        whileHover="hover"
-        variants={logoVariants}
+        variants={titleVariants}
         sx={{
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 1,
-          py: 1,
-          cursor: 'pointer',
-          width: '100%',
+          mb: { xs: 2, sm: 3 },
+          mt: { xs: 1, sm: 2 },
+          mx: 'auto',
+          width: { xs: '100%', sm: '90%', md: '80%' },
+          maxWidth: '600px',
           textAlign: 'center',
-          '&:hover': {
-            '& .logo-text': {
-              letterSpacing: '1.2px',
-            }
+          position: 'relative',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            bottom: '-8px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: { xs: '40%', sm: '30%', md: '20%' },
+            height: '2px',
+            background: 'linear-gradient(90deg, transparent, rgba(var(--primary-color), 0.7), transparent)',
+            borderRadius: '2px'
           }
         }}
-        onClick={() => navigate('/')}
       >
         <motion.div className="logo-text" style={{ textAlign: 'center' }}>
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              fontWeight: 800,
-              letterSpacing: 1,
-              color: 'primary.main',
-              transition: 'letter-spacing 0.3s ease'
-            }}
-          >
+          <Typography variant="h5" sx={{ 
+            fontWeight: 600, 
+            letterSpacing: '0.5px',
+            fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' },
+            background: theme.palette.mode === 'dark' 
+              ? 'linear-gradient(45deg, #90caf9 30%, #64b5f6 90%)' 
+              : 'linear-gradient(45deg, #1976d2 30%, #2196f3 90%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: theme.palette.mode === 'dark' ? 'transparent' : 'inherit',
+            padding: { xs: '0.5rem 0', sm: '0.75rem 0' }
+          }}>
             Mistura e Manipulação
           </Typography>
         </motion.div>
@@ -165,6 +174,49 @@ export function TabMenu() {
         initial="hidden"
         animate="visible"
         variants={tabsVariants}
+        sx={{
+          width: '100%',
+          overflowX: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
+          WebkitOverflowScrolling: 'touch', 
+          scrollbarWidth: 'thin', 
+          msOverflowStyle: 'none',
+          position: 'relative',
+          mb: { xs: 2, sm: 3 },
+          '&::-webkit-scrollbar': {
+            height: '4px'
+          },
+          '&::-webkit-scrollbar-track': {
+            background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: theme.palette.primary.main,
+            borderRadius: '4px'
+          },
+          '&::before, &::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            width: '24px',
+            pointerEvents: 'none',
+            opacity: 0.8,
+            display: { xs: 'block', md: 'none' }
+          },
+          '&::before': {
+            left: 0,
+            background: theme.palette.mode === 'dark'
+              ? 'linear-gradient(270deg, rgba(18,18,18,0) 0%, rgba(18,18,18,1) 100%)'
+              : 'linear-gradient(270deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)'
+          },
+          '&::after': {
+            right: 0,
+            background: theme.palette.mode === 'dark'
+              ? 'linear-gradient(90deg, rgba(18,18,18,0) 0%, rgba(18,18,18,1) 100%)'
+              : 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)'
+          }
+        }}
       >
         <Tabs
           value={getTabValue()}
@@ -174,46 +226,52 @@ export function TabMenu() {
           scrollButtons="auto"
           allowScrollButtonsMobile
           sx={{
+            minHeight: { xs: '36px', sm: '48px' },
+            maxWidth: '100%',
+            width: { xs: '100%', sm: '90%', md: '80%' },
+            margin: '0 auto',
+            '& .MuiTabs-flexContainer': {
+              gap: { xs: 1, sm: 2, md: 3 },
+              justifyContent: { sm: 'center' }
+            },
             '& .MuiTabs-indicator': {
-              height: 3,
-              borderRadius: '3px',
-              background: theme.palette.mode === 'dark' 
-                ? 'linear-gradient(90deg, rgba(33,150,243,1) 0%, rgba(110,168,255,1) 100%)' 
-                : 'linear-gradient(90deg, rgba(25,118,210,1) 0%, rgba(74,144,226,1) 100%)',
-              boxShadow: theme.palette.mode === 'dark' 
-                ? '0 0 8px rgba(33,150,243,0.5)' 
-                : 'none',
+              height: '3px',
+              borderRadius: '3px 3px 0 0'
             },
             '& .MuiTab-root': {
-              minHeight: '48px',
-              transition: 'all 0.3s ease',
-              opacity: 0.7,
+              minHeight: { xs: '36px', sm: '48px' },
+              padding: { xs: '6px 12px', sm: '8px 20px' },
+              minWidth: { xs: 'auto', sm: '100px' },
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
+              fontWeight: 500,
+              textTransform: 'none',
+              transition: 'all 0.2s ease',
+              flex: { xs: '1 0 auto', sm: '0 0 auto' },
+              borderRadius: '8px 8px 0 0',
               '&.Mui-selected': {
-                opacity: 1,
                 fontWeight: 600,
-              },
-              '&:hover': {
-                opacity: 1,
                 backgroundColor: theme.palette.mode === 'dark' 
-                  ? 'rgba(255, 255, 255, 0.05)' 
-                  : 'rgba(0, 0, 0, 0.03)',
-                borderRadius: '8px 8px 0 0',
+                  ? 'rgba(255, 255, 255, 0.05)'
+                  : 'rgba(0, 0, 0, 0.03)'
+              },
+              '&:active': {
+                transform: 'scale(0.96)',
+                transition: 'transform 0.1s'
               }
             },
+            '& .MuiSvgIcon-root': {
+              fontSize: { xs: '1.2rem', sm: '1.5rem' }
+            },
             '& .MuiTabs-scrollButtons': {
-              transition: 'all 0.3s ease',
+              width: { xs: '28px', sm: '40px' },
+              height: { xs: '28px', sm: '40px' },
+              borderRadius: '50%',
+              backgroundColor: theme.palette.mode === 'dark' 
+                ? 'rgba(255, 255, 255, 0.05)'
+                : 'rgba(0, 0, 0, 0.03)',
+              margin: { xs: '0 4px', sm: '0 8px' },
               '&.Mui-disabled': {
-                opacity: 0.3,
-              },
-              '&:not(.Mui-disabled)': {
-                opacity: 0.8,
-              },
-              '&:hover:not(.Mui-disabled)': {
-                opacity: 1,
-                backgroundColor: theme.palette.mode === 'dark' 
-                  ? 'rgba(255, 255, 255, 0.05)' 
-                  : 'rgba(0, 0, 0, 0.03)',
-                borderRadius: '8px',
+                opacity: 0.3
               }
             }
           }}
@@ -234,8 +292,10 @@ export function TabMenu() {
                           color="error"
                           sx={{
                             '& .MuiBadge-badge': {
-                              animation: 'pulse 2s infinite',
-                              transition: 'all 0.3s ease',
+                              fontSize: { xs: '0.65rem', sm: '0.75rem' },
+                              minWidth: { xs: '16px', sm: '20px' },
+                              height: { xs: '16px', sm: '20px' },
+                              padding: { xs: '0 4px', sm: '0 6px' }
                             }
                           }}
                         >
@@ -252,7 +312,11 @@ export function TabMenu() {
                 onMouseLeave={() => setHoverTab(null)}
                 sx={{
                   borderRadius: '8px 8px 0 0',
-                  marginRight: '2px',
+                  marginRight: { xs: '1px', sm: '2px' },
+                  '& .MuiTab-iconWrapper': {
+                    marginRight: { xs: '4px', sm: '8px' },
+                    marginBottom: '0 !important'
+                  },
                   '&.Mui-selected': {
                     color: theme.palette.mode === 'dark' ? 'primary.light' : 'primary.main',
                   }

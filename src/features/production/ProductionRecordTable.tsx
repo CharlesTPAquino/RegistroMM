@@ -35,6 +35,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { SxProps, Theme } from '@mui/material/styles';
 
 // Componente de linha de tabela com animação
 const AnimatedTableRow = motion(TableRow);
@@ -175,23 +176,29 @@ const initialRecords: ProductionRecord[] = [
   }
 ];
 
+// Interface para as props do componente
 interface ProductionRecordTableProps {
   records?: ProductionRecord[];
+  productionId?: string;
   products?: { [key: string]: Product };
   employees?: { [key: string]: Employee };
   onAddRecord?: (record: ProductionRecord) => void;
   onUpdateRecord?: (record: ProductionRecord) => void;
   onDeleteRecord?: (id: string) => void;
+  sx?: SxProps<Theme>;
 }
 
-export function ProductionRecordTable({
+// Componente principal da tabela de registros
+export const ProductionRecordTable: React.FC<ProductionRecordTableProps> = ({
   records = initialRecords,
+  productionId,
   products = sampleProducts,
   employees = sampleEmployees,
   onAddRecord,
   onUpdateRecord,
-  onDeleteRecord
-}: ProductionRecordTableProps) {
+  onDeleteRecord,
+  sx = {}
+}) => {
   const [tableRecords, setTableRecords] = useState<ProductionRecord[]>(records);
   const [openDialog, setOpenDialog] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<Partial<ProductionRecord>>({});
@@ -310,32 +317,58 @@ export function ProductionRecordTable({
   };
 
   return (
-    <Box className="animate-fade-in">
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+    <Box sx={{ ...sx }} className="animate-fade-in">
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: { xs: 'column', sm: 'row' },
+        justifyContent: 'space-between', 
+        alignItems: { xs: 'flex-start', sm: 'center' }, 
+        gap: { xs: 2, sm: 0 },
+        mb: 2 
+      }}>
+        <Typography 
+          variant="h5" 
+          sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            fontSize: { xs: '1.1rem', sm: '1.25rem' }
+          }}
+        >
           <EventNoteIcon color="primary" />
-          Registro Hora a Hora
+          Registros Hora a Hora
         </Typography>
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
           onClick={() => handleOpenDialog()}
-          className="button-hover"
+          sx={{ 
+            borderRadius: '8px',
+            fontSize: { xs: '0.8rem', sm: '0.875rem' },
+            py: { xs: 0.5, sm: 1 }
+          }}
         >
-          Adicionar Registro
+          Novo Registro
         </Button>
       </Box>
 
-      <TableContainer
-        component={Paper}
-        sx={{
-          borderRadius: '8px',
+      <TableContainer 
+        component={Paper} 
+        sx={{ 
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)', 
+          borderRadius: { xs: '8px', sm: '12px' }, 
           overflow: 'hidden',
-          boxShadow: (theme) => theme.palette.mode === 'dark'
-            ? '0 8px 24px rgba(0, 0, 0, 0.4)'
-            : '0 8px 24px rgba(0, 0, 0, 0.1)',
-          transition: 'all 0.3s ease'
+          '& .MuiTable-root': {
+            tableLayout: 'fixed'
+          },
+          '& .MuiTableCell-root': {
+            padding: { xs: '8px 4px', sm: '16px 8px' },
+            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+            whiteSpace: { xs: 'nowrap', md: 'normal' },
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }
         }}
       >
         <Table>

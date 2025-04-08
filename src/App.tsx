@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ThemeProvider, CssBaseline, Box, Container, Paper, PaletteMode, useMediaQuery } from '@mui/material';
 import { HashRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { getTheme } from './theme';
@@ -18,28 +18,27 @@ const AnimatedPaper = motion(Paper);
 const PageTransition = () => {
   const location = useLocation();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const isMobile = useMediaQuery('(max-width:600px)');
   
   // Variantes de animação para as páginas
   const pageVariants = {
-    initial: { opacity: 0, y: 20 },
+    initial: isMobile 
+      ? { opacity: 0, x: 100 } 
+      : { opacity: 0, y: 20 },
     animate: { 
       opacity: 1, 
+      x: 0,
       y: 0,
       transition: {
-        duration: 0.4,
+        duration: isMobile ? 0.3 : 0.4,
         ease: "easeOut",
         when: "beforeChildren",
         staggerChildren: 0.1
       }
     },
-    exit: { 
-      opacity: 0, 
-      y: -20,
-      transition: {
-        duration: 0.3,
-        ease: "easeIn"
-      }
-    }
+    exit: isMobile 
+      ? { opacity: 0, x: -100, transition: { duration: 0.25, ease: "easeIn" } }
+      : { opacity: 0, y: -20, transition: { duration: 0.3, ease: "easeIn" } }
   };
 
   // Variantes para elementos filhos dentro das páginas
@@ -64,6 +63,7 @@ const PageTransition = () => {
         sx={{ 
           width: '100%', 
           height: '100%',
+          overflowX: 'hidden', // Evita barras de rolagem horizontais durante a animação
           '& .MuiPaper-root, & .MuiCard-root': {
             variants: childVariants
           }
@@ -186,49 +186,87 @@ function App() {
           )}
           
           <Container 
-            maxWidth="xl" 
             component={motion.div}
-            initial="initial"
-            animate="animate"
-            variants={containerVariants}
+            maxWidth="xl" 
             sx={{ 
-              px: { xs: 2, md: 3 },
-              pt: 2,
-              pb: 4
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              pt: { xs: 2, sm: 3, md: 4 },
+              pb: { xs: 2, sm: 3 },
+              px: { xs: 2, sm: 3, md: 4 },
+              position: 'relative',
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '4px',
+                background: 'linear-gradient(90deg, transparent, rgba(var(--primary-color), 0.7), transparent)',
+                opacity: 0.8,
+                zIndex: 1
+              }
             }}
           >
             <Box sx={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center',
-              py: 2,
-              mb: 2
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              position: 'relative',
+              zIndex: 2
             }}>
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                mb: { xs: 1, sm: 2 },
+                mx: 'auto',
+                width: '100%',
+                maxWidth: { xs: '100%', sm: '95%', md: '90%' }
+              }}>
+                <ThemeToggle mode={mode} toggleColorMode={toggleColorMode} />
+              </Box>
+              
               <TabMenu />
-              <ThemeToggle mode={mode} toggleColorMode={toggleColorMode} />
-            </Box>
             
-            <AnimatedPaper 
-              elevation={mode === 'dark' ? 4 : 2} 
-              sx={{ 
-                borderRadius: '16px', 
-                overflow: 'hidden',
-                minHeight: 'calc(100vh - 120px)',
-                mb: 4,
-                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                background: mode === 'dark' 
-                  ? 'linear-gradient(145deg, rgba(36,36,36,1) 0%, rgba(30,30,30,1) 100%)' 
-                  : 'linear-gradient(145deg, rgba(255,255,255,1) 0%, rgba(245,245,245,1) 100%)',
-                boxShadow: mode === 'dark'
-                  ? '0 10px 30px rgba(0, 0, 0, 0.5)'
-                  : '0 10px 30px rgba(0, 0, 0, 0.1)'
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <PageTransition />
-            </AnimatedPaper>
+              <AnimatedPaper 
+                elevation={mode === 'dark' ? 4 : 2} 
+                sx={{ 
+                  borderRadius: { xs: '16px', sm: '20px' }, 
+                  overflow: 'hidden',
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minHeight: { xs: 'calc(100vh - 160px)', sm: 'calc(100vh - 120px)' },
+                  mb: { xs: 2, sm: 4 },
+                  mx: 'auto',
+                  width: '100%',
+                  maxWidth: { xs: '100%', sm: '95%', md: '90%' },
+                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                  background: mode === 'dark' 
+                    ? 'linear-gradient(145deg, rgba(36,36,36,1) 0%, rgba(30,30,30,1) 100%)' 
+                    : 'linear-gradient(145deg, rgba(255,255,255,1) 0%, rgba(245,245,245,1) 100%)',
+                  boxShadow: mode === 'dark'
+                    ? '0 10px 30px rgba(0, 0, 0, 0.5)'
+                    : '0 10px 30px rgba(0, 0, 0, 0.1)',
+                  position: 'relative',
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: '4px',
+                    background: 'linear-gradient(90deg, transparent, rgba(var(--primary-color), 0.5), transparent)',
+                    opacity: 0.6
+                  }
+                }}
+              >
+                <PageTransition />
+              </AnimatedPaper>
+            </Box>
           </Container>
         </Box>
       </Router>

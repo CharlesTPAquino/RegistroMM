@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Divider, Button, Card, CardContent, CardHeader, Chip } from '@mui/material';
 import { ProductionForm } from './ProductionForm';
 import { ProductionRecordTable } from './ProductionRecordTable';
@@ -90,8 +90,24 @@ export function ProductionPage() {
 
   return (
     <Box sx={{ p: { xs: 2, md: 3 } }} className="animate-fade-in">
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" component="h1" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: { xs: 'column', sm: 'row' },
+        justifyContent: 'space-between', 
+        alignItems: { xs: 'flex-start', sm: 'center' }, 
+        gap: { xs: 2, sm: 0 },
+        mb: 3 
+      }}>
+        <Typography 
+          variant="h4" 
+          component="h1" 
+          sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' }
+          }}
+        >
           <FactoryIcon fontSize="large" color="primary" />
           Registro de Produção
         </Typography>
@@ -100,7 +116,11 @@ export function ProductionPage() {
           color="primary" 
           onClick={handleChangeProduction}
           startIcon={<SwapHorizIcon />}
-          sx={{ borderRadius: '8px' }}
+          sx={{ 
+            borderRadius: '8px',
+            fontSize: { xs: '0.8rem', sm: '0.875rem' },
+            py: { xs: 0.5, sm: 1 }
+          }}
           className="button-hover"
         >
           Alternar Produção
@@ -111,7 +131,7 @@ export function ProductionPage() {
         elevation={3} 
         sx={{ 
           mb: 4, 
-          borderRadius: '12px', 
+          borderRadius: { xs: '8px', sm: '12px' }, 
           overflow: 'hidden',
           transition: 'all 0.3s ease'
         }}
@@ -119,22 +139,33 @@ export function ProductionPage() {
       >
         <CardHeader 
           title={
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <AssignmentIcon color="primary" />
-              <Typography variant="h6">
-                Dados da Produção
-              </Typography>
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { xs: 'flex-start', sm: 'center' }, 
+              gap: { xs: 1, sm: 2 }
+            }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <AssignmentIcon color="primary" />
+                <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+                  Dados da Produção
+                </Typography>
+              </Box>
               <Chip 
                 label={productionRecord.status} 
                 color={getStatusColor(productionRecord.status || '')} 
                 size="small"
-                sx={{ ml: 2, fontWeight: 500 }}
+                sx={{ ml: { xs: 0, sm: 2 }, fontWeight: 500 }}
               />
             </Box>
           }
           subheader={
             <Box sx={{ mt: 1 }}>
-              <Typography variant="body2" color="text.secondary">
+              <Typography 
+                variant="body2" 
+                color="text.secondary"
+                sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+              >
                 Ordem: {productionRecord.order_number} | Lote: {productionRecord.batch_number}
               </Typography>
             </Box>
@@ -144,25 +175,65 @@ export function ProductionPage() {
               ? 'rgba(255, 255, 255, 0.05)' 
               : 'rgba(25, 118, 210, 0.05)', 
             borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-            pb: 1
+            pb: 1,
+            px: { xs: 2, sm: 3 }
           }}
         />
-        <CardContent sx={{ p: 3 }}>
+        <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
           <ProductionForm 
-            record={productionRecord}
-            onSubmit={handleFormSubmit}
+            initialData={productionRecord} 
+            onSubmit={handleFormSubmit} 
+            sx={{ 
+              '& .MuiFormControl-root': {
+                mb: { xs: 1.5, sm: 2 }
+              },
+              '& .MuiInputLabel-root': {
+                fontSize: { xs: '0.8rem', sm: '0.875rem' }
+              },
+              '& .MuiInputBase-root': {
+                fontSize: { xs: '0.85rem', sm: '0.9rem' }
+              },
+              '& .MuiButton-root': {
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                py: { xs: 0.5, sm: 1 }
+              }
+            }}
           />
         </CardContent>
       </Card>
-
-      <Divider sx={{ my: 4 }} />
       
-      {/* Tabela de Registro Hora a Hora com os campos solicitados */}
-      <ProductionRecordTable 
-        onAddRecord={handleAddRecord}
-        onUpdateRecord={handleUpdateRecord}
-        onDeleteRecord={handleDeleteRecord}
-      />
+      <Box sx={{ mt: 4 }}>
+        <Typography 
+          variant="h5" 
+          component="h2" 
+          sx={{ 
+            mb: 2, 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            fontSize: { xs: '1.25rem', sm: '1.5rem' }
+          }}
+        >
+          Registros de Produção
+        </Typography>
+        
+        <ProductionRecordTable 
+          productionId={activeProductionId}
+          onAddRecord={handleAddRecord}
+          onUpdateRecord={handleUpdateRecord}
+          onDeleteRecord={handleDeleteRecord}
+          sx={{
+            '& .MuiTableCell-root': {
+              padding: { xs: '8px 4px', sm: '16px 8px' },
+              fontSize: { xs: '0.75rem', sm: '0.875rem' }
+            },
+            '& .MuiButton-root': {
+              fontSize: { xs: '0.7rem', sm: '0.8rem' },
+              padding: { xs: '3px 6px', sm: '4px 8px' }
+            }
+          }}
+        />
+      </Box>
     </Box>
   );
 }

@@ -51,7 +51,22 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ mode, toggleColorMode 
   };
 
   return (
-    <Box sx={{ ml: 1 }}>
+    <Box sx={{ 
+      ml: { xs: 0, sm: 1 },
+      '& .MuiIconButton-root': {
+        padding: { xs: '6px', sm: '8px' },
+        backgroundColor: (theme) => 
+          theme.palette.mode === 'dark' 
+            ? 'rgba(255, 255, 255, 0.1)' 
+            : 'rgba(0, 0, 0, 0.05)',
+        '&:hover': {
+          backgroundColor: (theme) => 
+            theme.palette.mode === 'dark' 
+              ? 'rgba(255, 255, 255, 0.2)' 
+              : 'rgba(0, 0, 0, 0.1)'
+        }
+      }
+    }}>
       {/* Movendo o AnimatePresence para fora do Tooltip */}
       <AnimatePresence mode="wait" initial={false}>
         {mode === 'dark' ? (
@@ -65,8 +80,12 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ mode, toggleColorMode 
               animate="animate"
               exit="exit"
               aria-label="dark mode"
+              sx={{
+                borderRadius: '8px',
+                fontSize: { xs: '0.9rem', sm: '1rem' }
+              }}
             >
-              <LightModeIcon />
+              <LightModeIcon fontSize="small" />
             </MotionIconButton>
           </Tooltip>
         ) : (
@@ -80,8 +99,12 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ mode, toggleColorMode 
               animate="animate"
               exit="exit"
               aria-label="light mode"
+              sx={{
+                borderRadius: '8px',
+                fontSize: { xs: '0.9rem', sm: '1rem' }
+              }}
             >
-              <DarkModeIcon />
+              <DarkModeIcon fontSize="small" />
             </MotionIconButton>
           </Tooltip>
         )}

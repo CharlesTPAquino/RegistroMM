@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -10,6 +10,9 @@ import {
   TableRow,
   Paper,
   Button,
+  Chip,
+  IconButton,
+  Tooltip,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -19,8 +22,12 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  SelectChangeEvent,
-  Chip
+  Stack,
+  Fab,
+  useMediaQuery,
+  useTheme,
+  Zoom,
+  SelectChangeEvent
 } from '@mui/material';
 import { HourlyRecord } from '../../types/HourlyRecord';
 import { Employee } from '../../types/Employee';
@@ -101,13 +108,30 @@ const initialRecords: HourlyRecord[] = [
 
 interface HourlyRecordTableProps {
   productionId: string;
+  sx?: any;
 }
 
-export function HourlyRecordTable({ productionId }: HourlyRecordTableProps) {
+export const HourlyRecordTable: React.FC<HourlyRecordTableProps> = ({
+  productionId,
+  sx = {}
+}) => {
   const [records, setRecords] = useState<HourlyRecord[]>(initialRecords);
   const [openDialog, setOpenDialog] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<Partial<HourlyRecord>>({});
   const [isEditing, setIsEditing] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  useEffect(() => {
+    if (productionId) {
+      const filteredRecords = initialRecords.filter(record => 
+        record.production_id === productionId
+      );
+      setRecords(filteredRecords);
+    } else {
+      setRecords(initialRecords);
+    }
+  }, [productionId]);
 
   const handleOpenDialog = (record?: HourlyRecord) => {
     if (record) {
@@ -143,7 +167,7 @@ export function HourlyRecordTable({ productionId }: HourlyRecordTableProps) {
     });
   };
 
-  const handleSelectChange = (e: SelectChangeEvent) => {
+  const handleSelectChange = (e: any) => {
     const { name, value } = e.target;
     setCurrentRecord({
       ...currentRecord,
@@ -211,35 +235,73 @@ export function HourlyRecordTable({ productionId }: HourlyRecordTableProps) {
   };
 
   return (
-    <Box sx={{ mt: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h5" component="h2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <EventNoteIcon color="primary" />
-          Registro Hora a Hora
-        </Typography>
-        <Button 
-          variant="contained" 
-          color="primary" 
-          startIcon={<AddIcon />}
-          onClick={() => handleOpenDialog()}
-          sx={{ borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}
+    <Box sx={{ ...sx, position: 'relative' }} className="animate-fade-in">
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: { xs: 'column', sm: 'row' },
+        justifyContent: 'space-between', 
+        alignItems: { xs: 'flex-start', sm: 'center' }, 
+        gap: { xs: 2, sm: 0 },
+        mb: 2 
+      }}>
+        <Typography 
+          variant="h5" 
+          sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            fontSize: { xs: '1.1rem', sm: '1.25rem' }
+          }}
         >
-          Adicionar Registro
-        </Button>
+          <EventNoteIcon color="primary" />
+          Registros Hora a Hora
+        </Typography>
+        {!isMobile && (
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => handleOpenDialog()}
+            sx={{ 
+              borderRadius: '8px',
+              fontSize: { xs: '0.8rem', sm: '0.875rem' },
+              py: { xs: 0.5, sm: 1 }
+            }}
+          >
+            Novo Registro
+          </Button>
+        )}
       </Box>
 
-      <TableContainer component={Paper} sx={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)', borderRadius: '12px', overflow: 'hidden' }}>
+      <TableContainer 
+        component={Paper} 
+        sx={{ 
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)', 
+          borderRadius: { xs: '8px', sm: '12px' }, 
+          overflow: 'hidden',
+          '& .MuiTable-root': {
+            tableLayout: 'fixed'
+          },
+          '& .MuiTableCell-root': {
+            padding: { xs: '8px 4px', sm: '16px 8px' },
+            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+            whiteSpace: { xs: 'nowrap', md: 'normal' },
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }
+        }}
+      >
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Horário</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Operador</TableCell>
-              <TableCell>Qtd. Produzida</TableCell>
-              <TableCell>Temperatura (°C)</TableCell>
-              <TableCell>Pressão (bar)</TableCell>
-              <TableCell>Observações</TableCell>
-              <TableCell align="center">Ações</TableCell>
+              <TableCell sx={{ width: { xs: '70px', sm: 'auto' } }}>Horário</TableCell>
+              <TableCell sx={{ width: { xs: '70px', sm: 'auto' } }}>Status</TableCell>
+              <TableCell sx={{ width: { xs: '80px', sm: 'auto' } }}>Operador</TableCell>
+              <TableCell sx={{ width: { xs: '70px', sm: 'auto' } }}>Qtd. Produzida</TableCell>
+              <TableCell sx={{ width: { xs: '80px', sm: 'auto' } }}>Temperatura (°C)</TableCell>
+              <TableCell sx={{ width: { xs: '70px', sm: 'auto' } }}>Pressão (bar)</TableCell>
+              <TableCell sx={{ width: { xs: '80px', sm: 'auto' } }}>Observações</TableCell>
+              <TableCell align="center" sx={{ width: { xs: '100px', sm: 'auto' } }}>Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -273,14 +335,24 @@ export function HourlyRecordTable({ productionId }: HourlyRecordTableProps) {
                   </TableCell>
                   <TableCell>{record.notes || '-'}</TableCell>
                   <TableCell align="center">
-                    <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      gap: '1px', 
+                      justifyContent: 'center',
+                      flexWrap: { xs: 'wrap', sm: 'nowrap' }
+                    }}>
                       <Button
                         variant="contained"
                         color="primary"
                         size="small"
                         startIcon={<EditIcon />}
                         onClick={() => handleOpenDialog(record)}
-                        sx={{ minWidth: '32px', padding: '4px 8px' }}
+                        sx={{ 
+                          minWidth: { xs: '28px', sm: '32px' }, 
+                          padding: { xs: '3px 6px', sm: '4px 8px' },
+                          fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                          m: '1px'
+                        }}
                       >
                         Editar
                       </Button>
@@ -290,7 +362,12 @@ export function HourlyRecordTable({ productionId }: HourlyRecordTableProps) {
                         size="small"
                         startIcon={<DeleteIcon />}
                         onClick={() => handleDelete(record.id)}
-                        sx={{ minWidth: '32px', padding: '4px 8px' }}
+                        sx={{ 
+                          minWidth: { xs: '28px', sm: '32px' }, 
+                          padding: { xs: '3px 6px', sm: '4px 8px' },
+                          fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                          m: '1px'
+                        }}
                       >
                         Excluir
                       </Button>
@@ -320,104 +397,199 @@ export function HourlyRecordTable({ productionId }: HourlyRecordTableProps) {
         </Table>
       </TableContainer>
 
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+      {/* Botão de ação flutuante (FAB) para dispositivos móveis */}
+      {isMobile && (
+        <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+          <Fab
+            color="primary"
+            aria-label="adicionar registro"
+            onClick={() => handleOpenDialog()}
+            sx={{
+              position: 'fixed',
+              bottom: 16,
+              right: 16,
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+              '&:active': {
+                transform: 'scale(0.95)',
+                transition: 'transform 0.1s'
+              }
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        </Zoom>
+      )}
+
+      {/* Diálogo para adicionar/editar registros */}
+      <Dialog 
+        open={openDialog} 
+        onClose={handleCloseDialog}
+        fullWidth
+        maxWidth="sm"
+        PaperProps={{
+          sx: {
+            borderRadius: { xs: '12px', sm: '16px' },
+            padding: { xs: 1, sm: 2 },
+            width: { xs: '95%', sm: '100%' }
+          }
+        }}
+      >
         <DialogTitle sx={{ borderBottom: '1px solid #f0f0f0', pb: 2 }}>
           {isEditing ? 'Editar Registro Hora a Hora' : 'Adicionar Novo Registro Hora a Hora'}
         </DialogTitle>
-        <DialogContent sx={{ pt: 3 }}>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 2 }}>
-            <TextField
-              label="Data e Hora"
-              type="datetime-local"
-              name="timestamp"
-              value={currentRecord.timestamp ? currentRecord.timestamp.slice(0, 16) : ''}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-              InputLabelProps={{ shrink: true }}
-            />
-            
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="status-label">Status</InputLabel>
-              <Select
-                labelId="status-label"
-                name="status"
-                value={currentRecord.status || ''}
-                onChange={handleSelectChange}
-                label="Status"
-              >
-                <MenuItem value="sendo separado">Sendo Separado</MenuItem>
-                <MenuItem value="produzindo">Produzindo</MenuItem>
-                <MenuItem value="parado">Parado</MenuItem>
-                <MenuItem value="finalizado">Finalizado</MenuItem>
-              </Select>
-            </FormControl>
-            
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Operador</InputLabel>
-              <Select
-                name="operator_id"
-                value={currentRecord.operator_id || ''}
-                onChange={handleSelectChange}
-                label="Operador"
-              >
-                {operators.map(operator => (
-                  <MenuItem key={operator.id} value={operator.id}>
-                    {operator.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            
-            <TextField
-              label="Quantidade Produzida"
-              name="quantity_produced"
-              type="number"
-              value={currentRecord.quantity_produced || ''}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            
-            <TextField
-              label="Temperatura (°C)"
-              name="temperature"
-              type="number"
-              value={currentRecord.temperature || ''}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-              InputProps={{
-                startAdornment: <ThermostatIcon color="error" sx={{ mr: 1 }} />,
-              }}
-            />
-            
-            <TextField
-              label="Pressão (bar)"
-              name="pressure"
-              type="number"
-              value={currentRecord.pressure || ''}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-              InputProps={{
-                startAdornment: <SpeedIcon color="info" sx={{ mr: 1 }} />,
-              }}
-              inputProps={{ step: 0.1 }}
-            />
-            
+        <DialogContent sx={{ pt: 2 }}>
+          <Stack spacing={2}>
+            <Box sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+              gap: 2 
+            }}>
+              <TextField
+                label="Horário"
+                type="time"
+                value={currentRecord.timestamp || ''}
+                onChange={(e) => setCurrentRecord({ ...currentRecord, timestamp: e.target.value })}
+                InputLabelProps={{ shrink: true }}
+                fullWidth
+                required
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                    padding: { xs: '10px 12px', sm: '12px 14px' }
+                  }
+                }}
+              />
+              <FormControl fullWidth required>
+                <InputLabel id="status-label">Status</InputLabel>
+                <Select
+                  labelId="status-label"
+                  value={currentRecord.status || ''}
+                  name="status"
+                  label="Status"
+                  onChange={handleSelectChange}
+                  sx={{
+                    '& .MuiSelect-select': {
+                      fontSize: { xs: '0.875rem', sm: '1rem' },
+                      padding: { xs: '10px 12px', sm: '12px 14px' }
+                    }
+                  }}
+                >
+                  <MenuItem value="running">Em Operação</MenuItem>
+                  <MenuItem value="stopped">Parado</MenuItem>
+                  <MenuItem value="maintenance">Em Manutenção</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+
+            <Box sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+              gap: 2 
+            }}>
+              <TextField
+                label="Temperatura (°C)"
+                type="number"
+                value={currentRecord.temperature || ''}
+                onChange={(e) => setCurrentRecord({ ...currentRecord, temperature: Number(e.target.value) })}
+                InputProps={{
+                  startAdornment: (
+                    <ThermostatIcon color="primary" sx={{ mr: 1, fontSize: { xs: '1.1rem', sm: '1.25rem' } }} />
+                  ),
+                }}
+                fullWidth
+                required
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                    padding: { xs: '10px 12px', sm: '12px 14px' }
+                  }
+                }}
+              />
+              <TextField
+                label="Pressão (bar)"
+                type="number"
+                value={currentRecord.pressure || ''}
+                onChange={(e) => setCurrentRecord({ ...currentRecord, pressure: Number(e.target.value) })}
+                InputProps={{
+                  startAdornment: (
+                    <SpeedIcon color="primary" sx={{ mr: 1, fontSize: { xs: '1.1rem', sm: '1.25rem' } }} />
+                  ),
+                }}
+                fullWidth
+                required
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                    padding: { xs: '10px 12px', sm: '12px 14px' }
+                  }
+                }}
+                inputProps={{ step: 0.1 }}
+              />
+            </Box>
+
+            <Box sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+              gap: 2 
+            }}>
+              <FormControl fullWidth required>
+                <InputLabel id="operator-label">Operador</InputLabel>
+                <Select
+                  labelId="operator-label"
+                  value={currentRecord.operator_id || ''}
+                  name="operator_id"
+                  label="Operador"
+                  onChange={handleSelectChange}
+                  sx={{
+                    '& .MuiSelect-select': {
+                      fontSize: { xs: '0.875rem', sm: '1rem' },
+                      padding: { xs: '10px 12px', sm: '12px 14px' }
+                    }
+                  }}
+                >
+                  {operators.map((operator) => (
+                    <MenuItem key={operator.id} value={operator.id}>
+                      {operator.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                label="Quantidade Produzida"
+                type="number"
+                value={currentRecord.quantity_produced || ''}
+                onChange={(e) => setCurrentRecord({ ...currentRecord, quantity_produced: Number(e.target.value) })}
+                InputProps={{
+                  startAdornment: (
+                    <InventoryIcon color="primary" sx={{ mr: 1, fontSize: { xs: '1.1rem', sm: '1.25rem' } }} />
+                  ),
+                }}
+                fullWidth
+                required
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                    padding: { xs: '10px 12px', sm: '12px 14px' }
+                  }
+                }}
+              />
+            </Box>
+
             <TextField
               label="Observações"
-              name="notes"
-              value={currentRecord.notes || ''}
-              onChange={handleInputChange}
-              fullWidth
               multiline
-              rows={4}
-              margin="normal"
-              sx={{ gridColumn: { md: '1 / span 2' } }}
+              rows={3}
+              value={currentRecord.notes || ''}
+              onChange={(e) => setCurrentRecord({ ...currentRecord, notes: e.target.value })}
+              fullWidth
+              sx={{
+                '& .MuiInputBase-input': {
+                  fontSize: { xs: '0.875rem', sm: '1rem' },
+                  padding: { xs: '10px 12px', sm: '12px 14px' }
+                }
+              }}
             />
-          </Box>
+          </Stack>
         </DialogContent>
         <DialogActions sx={{ borderTop: '1px solid #f0f0f0', p: 2 }}>
           <Button onClick={handleCloseDialog} color="inherit" variant="outlined">
