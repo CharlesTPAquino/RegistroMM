@@ -6,11 +6,41 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 
 console.log('Inicializando cliente Supabase com URL:', supabaseUrl);
 
-// Cria e exporta o cliente Supabase
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// Função para verificar se o localStorage está disponível
+const isLocalStorageAvailable = () => {
+  try {
+    const testKey = '__supabase_test__';
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
+    return true;
+  } catch (e) {
+    console.warn('localStorage não está disponível:', e);
+    return false;
+  }
+};
+
+// Opções do cliente Supabase
+const supabaseOptions = {
   auth: {
     autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
+    persistSession: isLocalStorageAvailable(),
+    detectSessionInUrl: true,
+    storage: isLocalStorageAvailable() 
+      ? localStorage 
+      : {
+          getItem: (key: string) => {
+            console.log(`Tentando acessar ${key} do armazenamento alternativo`);
+            return null;
+          },
+          setItem: (key: string, _value: string) => {
+            console.log(`Tentando armazenar ${key} no armazenamento alternativo`);
+          },
+          removeItem: (key: string) => {
+            console.log(`Tentando remover ${key} do armazenamento alternativo`);
+          }
+        }
   }
-});
+};
+
+// Cria e exporta o cliente Supabase
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, supabaseOptions);
