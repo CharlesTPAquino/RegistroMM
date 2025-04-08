@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecionando...</title>
+  <script>
+    // Pega o caminho atual da URL
+    var pathSegments = window.location.pathname.split('/');
+    var repoName = 'RegistroMM';
+    var path = pathSegments.slice(pathSegments.indexOf(repoName) + 1).join('/');
+    
+    // Salva o caminho atual para ser restaurado após o redirecionamento
+    sessionStorage.redirect = window.location.href;
+    
+    // Redireciona para a página principal
+    window.location.replace(window.location.origin + '/' + repoName);
+  </script>
+</head>
+<body>
+  Redirecionando...
+</body>
+</html>
