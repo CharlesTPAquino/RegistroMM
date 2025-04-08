@@ -19,6 +19,23 @@ const isLocalStorageAvailable = () => {
   }
 };
 
+// Implementação de armazenamento alternativo
+const memoryStorage = {
+  data: new Map(),
+  getItem: (key: string) => {
+    console.log(`Acessando ${key} do armazenamento em memória`);
+    return memoryStorage.data.get(key) || null;
+  },
+  setItem: (key: string, value: string) => {
+    console.log(`Armazenando ${key} no armazenamento em memória`);
+    memoryStorage.data.set(key, value);
+  },
+  removeItem: (key: string) => {
+    console.log(`Removendo ${key} do armazenamento em memória`);
+    memoryStorage.data.delete(key);
+  }
+};
+
 // Opções do cliente Supabase
 const supabaseOptions = {
   auth: {
@@ -27,18 +44,7 @@ const supabaseOptions = {
     detectSessionInUrl: true,
     storage: isLocalStorageAvailable() 
       ? localStorage 
-      : {
-          getItem: (key: string) => {
-            console.log(`Tentando acessar ${key} do armazenamento alternativo`);
-            return null;
-          },
-          setItem: (key: string, _value: string) => {
-            console.log(`Tentando armazenar ${key} no armazenamento alternativo`);
-          },
-          removeItem: (key: string) => {
-            console.log(`Tentando remover ${key} do armazenamento alternativo`);
-          }
-        }
+      : memoryStorage
   }
 };
 
