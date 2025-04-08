@@ -39,6 +39,9 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import PersonIcon from '@mui/icons-material/Person';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 // Dados de exemplo para os operadores
 const operators: Employee[] = [
@@ -234,6 +237,57 @@ export const HourlyRecordTable: React.FC<HourlyRecordTableProps> = ({
     });
   };
 
+  // Função para gerar o relatório PDF
+  const generatePdfReport = () => {
+    // Criar uma nova instância do jsPDF
+    const doc = new jsPDF();
+    const tableColumn = ["Horário", "Status", "Operador", "Temperatura", "Pressão", "Qtd. Produzida", "Observações"];
+    
+    // Mapear os dados da tabela para o formato esperado pelo jsPDF-AutoTable
+    const tableRows = records.map(record => {
+      const operatorName = operators.find(op => op.id === record.operator_id)?.name || 'N/A';
+      const statusMap: Record<string, string> = {
+        'produzindo': 'Em Operação',
+        'sendo separado': 'Preparação',
+        'parado': 'Parado',
+        'finalizado': 'Finalizado'
+      };
+      
+      return [
+        formatDateTime(record.timestamp),
+        statusMap[record.status] || record.status,
+        operatorName,
+        record.temperature ? `${record.temperature} °C` : 'N/A',
+        record.pressure ? `${record.pressure} bar` : 'N/A',
+        record.quantity_produced.toString(),
+        record.notes || 'N/A'
+      ];
+    });
+    
+    // Adicionar título ao PDF
+    doc.setFontSize(20);
+    doc.text("Relatório de Produção - Registros Hora a Hora", 14, 15);
+    
+    // Adicionar informações da data do relatório
+    doc.setFontSize(10);
+    doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 14, 22);
+    doc.text(`ID da Produção: ${productionId}`, 14, 27);
+    
+    // Adicionar a tabela ao PDF usando AutoTable
+    (doc as any).autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 35,
+      styles: { fontSize: 8, cellPadding: 2 },
+      headStyles: { fillColor: [66, 66, 66] },
+      alternateRowStyles: { fillColor: [240, 240, 240] },
+      margin: { top: 35 }
+    });
+    
+    // Salvar o PDF
+    doc.save(`relatorio-producao-${productionId}-${new Date().toISOString().slice(0,10)}.pdf`);
+  };
+
   return (
     <Box sx={{ ...sx, position: 'relative' }} className="animate-fade-in">
       <Box sx={{ 
@@ -256,21 +310,37 @@ export const HourlyRecordTable: React.FC<HourlyRecordTableProps> = ({
           <EventNoteIcon color="primary" />
           Registros Hora a Hora
         </Typography>
-        {!isMobile && (
+        <Box sx={{ display: 'flex', gap: 1 }}>
           <Button
-            variant="contained"
+            variant="outlined"
             color="primary"
-            startIcon={<AddIcon />}
-            onClick={() => handleOpenDialog()}
+            startIcon={<PictureAsPdfIcon />}
+            onClick={generatePdfReport}
+            disabled={records.length === 0}
             sx={{ 
               borderRadius: '8px',
               fontSize: { xs: '0.8rem', sm: '0.875rem' },
               py: { xs: 0.5, sm: 1 }
             }}
           >
-            Novo Registro
+            Relatório PDF
           </Button>
-        )}
+          {!isMobile && (
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              onClick={() => handleOpenDialog()}
+              sx={{ 
+                borderRadius: '8px',
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                py: { xs: 0.5, sm: 1 }
+              }}
+            >
+              Novo Registro
+            </Button>
+          )}
+        </Box>
       </Box>
 
       <TableContainer 
