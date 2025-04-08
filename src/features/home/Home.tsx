@@ -10,11 +10,9 @@ import {
   Divider,
   useTheme,
   Avatar,
-  LinearProgress,
-  useMediaQuery,
-  Paper
+  LinearProgress
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import FactoryIcon from '@mui/icons-material/Factory';
 import CategoryIcon from '@mui/icons-material/Category';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -41,12 +39,10 @@ const recentProductions = [
 // Componentes com animação
 const MotionCard = motion(Card);
 const MotionBox = motion(Box);
-const MotionTypography = motion(Typography);
-const MotionPaper = motion(Paper);
 
 export const Home: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentTime, setCurrentTime] = useState(new Date());
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
@@ -169,7 +165,7 @@ export const Home: React.FC = () => {
           animate="visible"
           variants={titleVariants}
         >
-          <MotionTypography 
+          <Typography 
             variant="h4" 
             component="h1" 
             gutterBottom 
@@ -184,7 +180,7 @@ export const Home: React.FC = () => {
             }}
           >
             Bem-vindo ao Registro MM
-          </MotionTypography>
+          </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <AccessTimeIcon fontSize="small" color="action" />
             <Typography variant="subtitle1" color="text.secondary">
@@ -211,7 +207,7 @@ export const Home: React.FC = () => {
             variant="contained" 
             color="primary" 
             size="large"
-            component={Link}
+            component={RouterLink}
             to="/production"
             startIcon={<AssignmentIcon />}
             sx={{ 
@@ -522,7 +518,7 @@ export const Home: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.5 }}
       >
-        <MotionTypography 
+        <Typography 
           variant="h5" 
           sx={{ 
             mb: 3, 
@@ -546,7 +542,7 @@ export const Home: React.FC = () => {
         >
           <AssignmentIcon color="primary" />
           Produções Recentes
-        </MotionTypography>
+        </Typography>
       </MotionBox>
 
       <Box sx={{ 
@@ -655,7 +651,7 @@ export const Home: React.FC = () => {
                     <Button 
                       variant="outlined" 
                       size="small" 
-                      component={Link}
+                      component={RouterLink}
                       to="/production"
                       sx={{ 
                         borderRadius: '8px',
@@ -676,7 +672,7 @@ export const Home: React.FC = () => {
                       variant="contained" 
                       color="primary" 
                       size="small"
-                      component={Link}
+                      component={RouterLink}
                       to="/production"
                       sx={{ 
                         borderRadius: '8px',

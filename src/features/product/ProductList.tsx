@@ -29,11 +29,11 @@ import { Product } from '../../types/Product';
 
 // Dados de exemplo
 const initialProducts: Product[] = [
-  { id: '1', name: 'Paracetamol 500mg', category: 'Medicamento', stock: 150, price: 15.99 },
-  { id: '2', name: 'Dipirona 1g', category: 'Medicamento', stock: 120, price: 12.50 },
-  { id: '3', name: 'Vitamina C 1g', category: 'Suplemento', stock: 80, price: 25.90 },
-  { id: '4', name: 'Protetor Solar FPS 60', category: 'Cosmético', stock: 45, price: 89.90 },
-  { id: '5', name: 'Sabonete Facial', category: 'Cosmético', stock: 60, price: 32.50 }
+  { id: '1', name: 'Paracetamol 500mg', category: 'Medicamento', stock: 150, price: 15.99, active: true },
+  { id: '2', name: 'Dipirona 1g', category: 'Medicamento', stock: 120, price: 12.50, active: true },
+  { id: '3', name: 'Vitamina C 1g', category: 'Suplemento', stock: 80, price: 25.90, active: true },
+  { id: '4', name: 'Protetor Solar FPS 60', category: 'Cosmético', stock: 45, price: 89.90, active: true },
+  { id: '5', name: 'Sabonete Facial', category: 'Cosmético', stock: 60, price: 32.50, active: true }
 ];
 
 export function ProductList() {
@@ -48,7 +48,7 @@ export function ProductList() {
       setCurrentProduct({ ...product });
       setIsEditing(true);
     } else {
-      setCurrentProduct({ name: '', category: 'Medicamento', stock: 0, price: 0 });
+      setCurrentProduct({ name: '', category: 'Medicamento', stock: 0, price: 0, active: true });
       setIsEditing(false);
     }
     setOpenDialog(true);
@@ -88,7 +88,8 @@ export function ProductList() {
         name: currentProduct.name || '',
         category: currentProduct.category || 'Medicamento',
         stock: currentProduct.stock || 0,
-        price: currentProduct.price || 0
+        price: currentProduct.price || 0,
+        active: currentProduct.active || true
       };
       setProducts([...products, newProduct]);
     }
