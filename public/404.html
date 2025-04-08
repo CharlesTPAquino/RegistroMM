@@ -11,13 +11,16 @@
     var path = pathSegments.slice(pathSegments.indexOf(repoName) + 1).join('/');
     
     // Salva o caminho atual para ser restaurado após o redirecionamento
-    sessionStorage.redirect = window.location.href;
+    sessionStorage.setItem('redirect', window.location.href);
     
-    // Redireciona para a página principal
-    window.location.replace(window.location.origin + '/' + repoName);
+    // Redireciona para a página principal com hash router
+    window.location.replace(window.location.origin + '/' + repoName + '/#/' + path);
   </script>
 </head>
 <body>
-  Redirecionando...
+  <div style="text-align: center; font-family: Arial, sans-serif; margin-top: 50px;">
+    <h1>Redirecionando...</h1>
+    <p>Você será redirecionado para a página principal em instantes.</p>
+  </div>
 </body>
 </html>
