@@ -5,31 +5,6 @@
     <link rel="icon" type="image/svg+xml" href="./vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro MM</title>
-    <script>
-      // Verifica se há um redirecionamento salvo na sessão
-      (function() {
-        // Script para lidar com redirecionamentos do GitHub Pages
-        var redirect = sessionStorage.getItem('redirect');
-        if (redirect && redirect !== window.location.href) {
-          // Limpa o redirecionamento salvo
-          sessionStorage.removeItem('redirect');
-          // Extrai o caminho do redirecionamento
-          var url = new URL(redirect);
-          var path = url.pathname.split('/').slice(2).join('/');
-          // Navega para o caminho correto usando o hash router
-          if (path) {
-            window.location.replace(window.location.origin + window.location.pathname + '#/' + path);
-          }
-        }
-
-        // Lidar com o redirecionamento do GitHub Pages
-        var p = window.location.search.match(/\?p=(.*)/);
-        if (p && p[1]) {
-          // Redirecionar para a rota correta usando o hash router
-          window.location.replace(window.location.origin + window.location.pathname.split('?')[0] + '#/' + p[1]);
-        }
-      })();
-    </script>
     <script type="module" crossorigin src="/RegistroMM/assets/index.a2207076.js"></script>
     <link rel="stylesheet" href="/RegistroMM/assets/index.4d07a41d.css">
   </head>
