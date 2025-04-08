@@ -5,6 +5,34 @@
     <link rel="icon" type="image/svg+xml" href="./vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro MM</title>
+    <script>
+      // Polyfill para localStorage quando não estiver disponível (como em iframes com restrições)
+      try {
+        // Tenta acessar o localStorage
+        window.localStorage.getItem('test');
+      } catch (e) {
+        // Se falhar, cria um polyfill
+        console.log('Criando polyfill para localStorage');
+        var memoryStorage = {};
+        Object.defineProperty(window, 'localStorage', {
+          value: {
+            setItem: function(key, value) {
+              memoryStorage[key] = value;
+            },
+            getItem: function(key) {
+              return memoryStorage[key] || null;
+            },
+            removeItem: function(key) {
+              delete memoryStorage[key];
+            },
+            clear: function() {
+              memoryStorage = {};
+            }
+          },
+          writable: false
+        });
+      }
+    </script>
     <script type="module" crossorigin src="/RegistroMM/assets/index.a2207076.js"></script>
     <link rel="stylesheet" href="/RegistroMM/assets/index.4d07a41d.css">
   </head>
