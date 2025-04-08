@@ -52,9 +52,10 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ mode, toggleColorMode 
 
   return (
     <Box sx={{ ml: 1 }}>
-      <Tooltip title={mode === 'dark' ? 'Mudar para modo claro' : 'Mudar para modo escuro'}>
-        <AnimatePresence mode="wait" initial={false}>
-          {mode === 'dark' ? (
+      {/* Movendo o AnimatePresence para fora do Tooltip */}
+      <AnimatePresence mode="wait" initial={false}>
+        {mode === 'dark' ? (
+          <Tooltip title="Mudar para modo claro">
             <MotionIconButton
               key="dark-mode"
               onClick={toggleColorMode}
@@ -67,7 +68,9 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ mode, toggleColorMode 
             >
               <LightModeIcon />
             </MotionIconButton>
-          ) : (
+          </Tooltip>
+        ) : (
+          <Tooltip title="Mudar para modo escuro">
             <MotionIconButton
               key="light-mode"
               onClick={toggleColorMode}
@@ -80,9 +83,9 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ mode, toggleColorMode 
             >
               <DarkModeIcon />
             </MotionIconButton>
-          )}
-        </AnimatePresence>
-      </Tooltip>
+          </Tooltip>
+        )}
+      </AnimatePresence>
     </Box>
   );
 };

@@ -135,6 +135,8 @@ export function TabMenu() {
           gap: 1,
           py: 1,
           cursor: 'pointer',
+          width: '100%',
+          textAlign: 'center',
           '&:hover': {
             '& .logo-text': {
               letterSpacing: '1.2px',
@@ -143,20 +145,7 @@ export function TabMenu() {
         }}
         onClick={() => navigate('/')}
       >
-        <motion.div className="logo-text">
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              fontWeight: 800,
-              letterSpacing: 1,
-              color: theme.palette.mode === 'dark' ? 'primary.light' : 'primary.dark',
-              transition: 'letter-spacing 0.3s ease'
-            }}
-          >
-            MISTURA
-          </Typography>
-        </motion.div>
-        <motion.div className="logo-text">
+        <motion.div className="logo-text" style={{ textAlign: 'center' }}>
           <Typography 
             variant="h5" 
             sx={{ 
@@ -166,20 +155,7 @@ export function TabMenu() {
               transition: 'letter-spacing 0.3s ease'
             }}
           >
-            MANIPULAÇÃO
-          </Typography>
-        </motion.div>
-        <motion.div className="logo-text">
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              fontWeight: 800,
-              letterSpacing: 1,
-              color: theme.palette.mode === 'dark' ? 'primary.light' : 'primary.dark',
-              transition: 'letter-spacing 0.3s ease'
-            }}
-          >
-            MISTURA
+            Mistura e Manipulação
           </Typography>
         </motion.div>
       </MotionBox>
