@@ -320,14 +320,13 @@ export const ProductionRecordTable: React.FC<ProductionRecordTableProps> = ({
     <Box sx={{ ...sx }} className="animate-fade-in">
       <Box sx={{ 
         display: 'flex', 
-        flexDirection: { xs: 'column', sm: 'row' },
         justifyContent: 'space-between', 
-        alignItems: { xs: 'flex-start', sm: 'center' }, 
-        gap: { xs: 2, sm: 0 },
-        mb: 2 
+        alignItems: 'center',
+        mb: 2
       }}>
         <Typography 
-          variant="h5" 
+          variant="h6" 
+          component="h3"
           sx={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -336,7 +335,7 @@ export const ProductionRecordTable: React.FC<ProductionRecordTableProps> = ({
           }}
         >
           <EventNoteIcon color="primary" />
-          Registros Hora a Hora
+          Registros de Produção
         </Typography>
         <Button
           variant="contained"
