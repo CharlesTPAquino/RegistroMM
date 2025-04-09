@@ -11,8 +11,6 @@ import {
   Paper,
   Button,
   Chip,
-  IconButton,
-  Tooltip,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -26,8 +24,7 @@ import {
   Fab,
   useMediaQuery,
   useTheme,
-  Zoom,
-  SelectChangeEvent
+  Zoom
 } from '@mui/material';
 import { HourlyRecord } from '../../types/HourlyRecord';
 import { Employee } from '../../types/Employee';
@@ -158,16 +155,6 @@ export const HourlyRecordTable: React.FC<HourlyRecordTableProps> = ({
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setCurrentRecord({});
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCurrentRecord({
-      ...currentRecord,
-      [name]: name === 'quantity_produced' || name === 'temperature' || name === 'pressure' 
-        ? Number(value) 
-        : value
-    });
   };
 
   const handleSelectChange = (e: any) => {

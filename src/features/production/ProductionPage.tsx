@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Box, Typography, Divider, Button, Card, CardContent, CardHeader, Chip } from '@mui/material';
+/** @jsxImportSource react */
+import { useState } from 'react';
+import { Box, Typography, Button, Card, CardContent, CardHeader, Chip } from '@mui/material';
 import { ProductionForm } from './ProductionForm';
 import { ProductionRecordTable } from './ProductionRecordTable';
 import { ProductionRecord } from '../../types/ProductionRecord';

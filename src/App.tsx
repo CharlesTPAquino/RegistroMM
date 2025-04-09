@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ThemeProvider, CssBaseline, Box, Container, Paper, PaletteMode, useMediaQuery } from '@mui/material';
 import { HashRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { getTheme } from './theme';
@@ -109,7 +109,7 @@ function App() {
   };
 
   // Efeito para sincronizar o tema com a preferência do sistema
-  useEffect(() => {
+  React.useEffect(() => {
     // Verifica se o usuário prefere o tema escuro no sistema
     const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
@@ -135,21 +135,8 @@ function App() {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // Gera o tema com base no modo atual
+  // Tema atual baseado no modo
   const theme = useMemo(() => getTheme(mode), [mode]);
-
-  // Variantes para a animação do container principal
-  const containerVariants = {
-    initial: { opacity: 0.9, scale: 0.98 },
-    animate: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { 
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
 
   return (
     <ThemeProvider theme={theme}>

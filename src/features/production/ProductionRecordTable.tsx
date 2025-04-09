@@ -191,7 +191,7 @@ interface ProductionRecordTableProps {
 // Componente principal da tabela de registros
 export const ProductionRecordTable: React.FC<ProductionRecordTableProps> = ({
   records = initialRecords,
-  productionId,
+  productionId: _productionId, // Renomeado para indicar que não é usado
   products = sampleProducts,
   employees = sampleEmployees,
   onAddRecord,
