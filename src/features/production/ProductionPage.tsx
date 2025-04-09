@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Box, Typography, Button, Card, CardContent, CardHeader, Chip } from '@mui/material';
 import { ProductionForm } from './ProductionForm';
 import { ProductionRecordTable } from './ProductionRecordTable';
+import { HourlyRecordTable } from './HourlyRecordTable';
 import { ProductionRecord } from '../../types/ProductionRecord';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
@@ -223,6 +224,36 @@ export function ProductionPage() {
           onAddRecord={handleAddRecord}
           onUpdateRecord={handleUpdateRecord}
           onDeleteRecord={handleDeleteRecord}
+          sx={{
+            '& .MuiTableCell-root': {
+              padding: { xs: '8px 4px', sm: '16px 8px' },
+              fontSize: { xs: '0.75rem', sm: '0.875rem' }
+            },
+            '& .MuiButton-root': {
+              fontSize: { xs: '0.7rem', sm: '0.8rem' },
+              padding: { xs: '3px 6px', sm: '4px 8px' }
+            }
+          }}
+        />
+      </Box>
+      
+      <Box sx={{ mt: 4 }}>
+        <Typography 
+          variant="h5" 
+          component="h2" 
+          sx={{ 
+            mb: 2, 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            fontSize: { xs: '1.25rem', sm: '1.5rem' }
+          }}
+        >
+          Registros Hora a Hora
+        </Typography>
+        
+        <HourlyRecordTable 
+          productionId={activeProductionId}
           sx={{
             '& .MuiTableCell-root': {
               padding: { xs: '8px 4px', sm: '16px 8px' },
