@@ -5,6 +5,7 @@ import { getTheme } from './theme';
 import { ProductionPage } from './features/production/ProductionPage';
 import { EmployeeList } from './features/employee/EmployeeList';
 import { ProductList } from './features/product/ProductList';
+import { InventoryPage } from './features/inventory/InventoryPage';
 import { TabMenu } from './components/TabMenu';
 import { ThemeToggle } from './components/ThemeToggle';
 import { Home } from './features/home/Home';
@@ -74,6 +75,7 @@ const PageTransition = () => {
           <Route path="/production" element={<ProductionPage />} />
           <Route path="/employees" element={<EmployeeList />} />
           <Route path="/products" element={<ProductList />} />
+          <Route path="/inventory" element={<InventoryPage />} />
         </Routes>
       </AnimatedPage>
     </AnimatePresence>
