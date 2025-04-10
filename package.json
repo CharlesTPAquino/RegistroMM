@@ -10,6 +10,7 @@
         "@heroicons/react": "^2.2.0",
         "@mui/icons-material": "^7.0.1",
         "@mui/material": "^7.0.1",
+        "@mui/x-data-grid": "^7.28.3",
         "@supabase/supabase-js": "^2.49.4",
         "@types/body-parser": "^1.19.5",
         "@types/cors": "^2.8.17",
@@ -28,9 +29,13 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^7.5.0",
+        "recharts": "^2.15.2",
         "tailwind-merge": "^3.2.0"
     },
     "devDependencies": {
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/react": "^16.3.0",
+        "@types/jest": "^29.5.14",
         "@types/jquery": "^3.5.32",
         "@types/jquery.transit": "^0.9.33",
         "@types/node": "^22.14.0",
@@ -53,6 +58,8 @@
         "predeploy": "npm run build",
         "deploy": "gh-pages -d dist --dotfiles",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "test": "jest",
+        "test:watch": "jest --watch"
     }
 }

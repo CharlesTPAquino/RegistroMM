@@ -10,6 +10,8 @@ import { TabMenu } from './components/TabMenu';
 import { ThemeToggle } from './components/ThemeToggle';
 import { Home } from './features/home/Home';
 import { AnimatePresence, motion } from 'framer-motion';
+import { DashboardPage } from './pages/DashboardPage';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 // Componente de animação para as páginas
 const AnimatedPage = motion(Box);
@@ -71,11 +73,19 @@ const PageTransition = () => {
         }}
       >
         <Routes location={location}>
-          <Route path="/" element={<Home />} />
+          <Route index element={<Home />} />
           <Route path="/production" element={<ProductionPage />} />
           <Route path="/employees" element={<EmployeeList />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/inventory" element={<InventoryPage />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </AnimatedPage>
     </AnimatePresence>

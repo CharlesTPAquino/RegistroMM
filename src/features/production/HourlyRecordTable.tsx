@@ -122,6 +122,44 @@ export const HourlyRecordTable: React.FC<HourlyRecordTableProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // Função para gerar relatório PDF
+  const generatePdfReport = () => {
+    const doc = new jsPDF();
+    
+    // Título do documento
+    doc.setFontSize(18);
+    doc.text('Relatório de Registros Hora a Hora', 14, 22);
+    
+    // Informações da produção
+    doc.setFontSize(12);
+    doc.text(`ID da Produção: ${productionId}`, 14, 32);
+    doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, 38);
+    
+    // Tabela de registros
+    const tableData = records.map(record => [
+      new Date(record.timestamp).toLocaleDateString(),
+      new Date(record.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+      operators.find(op => op.id === record.operator_id)?.name || 'N/A',
+      record.status,
+      record.quantity_produced.toString(),
+      record.temperature ? `${record.temperature} °C` : 'N/A',
+      record.pressure ? `${record.pressure} bar` : 'N/A',
+      record.notes || ''
+    ]);
+    
+    doc.autoTable({
+      startY: 45,
+      head: [['Data', 'Hora', 'Operador', 'Status', 'Qtd. Produzida', 'Temperatura', 'Pressão', 'Observações']],
+      body: tableData,
+      theme: 'grid',
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+      alternateRowStyles: { fillColor: [240, 240, 240] }
+    });
+    
+    // Salvar o PDF
+    doc.save(`relatorio-hora-a-hora-${productionId}.pdf`);
+  };
+
   useEffect(() => {
     if (productionId) {
       const filteredRecords = initialRecords.filter(record => 
@@ -222,57 +260,6 @@ export const HourlyRecordTable: React.FC<HourlyRecordTableProps> = ({
       hour: '2-digit',
       minute: '2-digit'
     });
-  };
-
-  // Função para gerar o relatório PDF
-  const generatePdfReport = () => {
-    // Criar uma nova instância do jsPDF
-    const doc = new jsPDF();
-    const tableColumn = ["Horário", "Status", "Operador", "Temperatura", "Pressão", "Qtd. Produzida", "Observações"];
-    
-    // Mapear os dados da tabela para o formato esperado pelo jsPDF-AutoTable
-    const tableRows = records.map(record => {
-      const operatorName = operators.find(op => op.id === record.operator_id)?.name || 'N/A';
-      const statusMap: Record<string, string> = {
-        'produzindo': 'Em Operação',
-        'sendo separado': 'Preparação',
-        'parado': 'Parado',
-        'finalizado': 'Finalizado'
-      };
-      
-      return [
-        formatDateTime(record.timestamp),
-        statusMap[record.status] || record.status,
-        operatorName,
-        record.temperature ? `${record.temperature} °C` : 'N/A',
-        record.pressure ? `${record.pressure} bar` : 'N/A',
-        record.quantity_produced.toString(),
-        record.notes || 'N/A'
-      ];
-    });
-    
-    // Adicionar título ao PDF
-    doc.setFontSize(20);
-    doc.text("Relatório de Produção - Registros Hora a Hora", 14, 15);
-    
-    // Adicionar informações da data do relatório
-    doc.setFontSize(10);
-    doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 14, 22);
-    doc.text(`ID da Produção: ${productionId}`, 14, 27);
-    
-    // Adicionar a tabela ao PDF usando AutoTable
-    (doc as any).autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 35,
-      styles: { fontSize: 8, cellPadding: 2 },
-      headStyles: { fillColor: [66, 66, 66] },
-      alternateRowStyles: { fillColor: [240, 240, 240] },
-      margin: { top: 35 }
-    });
-    
-    // Salvar o PDF
-    doc.save(`relatorio-producao-${productionId}-${new Date().toISOString().slice(0,10)}.pdf`);
   };
 
   return (

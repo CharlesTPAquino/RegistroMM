@@ -7,6 +7,7 @@ import FactoryIcon from '@mui/icons-material/Factory';
 import PeopleIcon from '@mui/icons-material/People';
 import CategoryIcon from '@mui/icons-material/Category';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 // Componente com animação
 const MotionBox = motion(Box);
@@ -29,6 +30,8 @@ export function TabMenu() {
         return 3
       case '/inventory':
         return 4
+      case '/dashboard':
+        return 5
       default:
         return 0
     }
@@ -50,6 +53,9 @@ export function TabMenu() {
         break
       case 4:
         navigate('/inventory')
+        break
+      case 5:
+        navigate('/dashboard')
         break
     }
   }
@@ -128,6 +134,11 @@ export function TabMenu() {
       icon: <InventoryIcon />, 
       label: "Estoque", 
       tooltip: "Gerenciar estoque"
+    },
+    { 
+      icon: <DashboardIcon />, 
+      label: "Dashboard", 
+      tooltip: "Página de dashboard"
     }
   ];
 

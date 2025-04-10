@@ -4,8 +4,8 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
+    "skipLibCheck": false,
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -18,7 +18,8 @@
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["@emotion/react/types/css-prop", "@mui/material/overrides", "./src/types/mui-grid"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

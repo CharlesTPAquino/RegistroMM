@@ -7,29 +7,23 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hzvxhnyutxqcixfteygs.supabase.co; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://hzvxhnyutxqcixfteygs.supabase.co wss://hzvxhnyutxqcixfteygs.supabase.co;">
     <title>Registro MM</title>
     <script>
-      // Polyfill para localStorage quando não estiver disponível
-      try {
-        window.localStorage.getItem('test');
-      } catch (e) {
-        console.log('Criando polyfill para localStorage');
-        var memoryStorage = {};
-        Object.defineProperty(window, 'localStorage', {
-          value: {
-            setItem: function(key, value) {
-              memoryStorage[key] = value;
-            },
-            getItem: function(key) {
-              return memoryStorage[key] || null;
-            },
-            removeItem: function(key) {
-              delete memoryStorage[key];
-            },
-            clear: function() {
-              memoryStorage = {};
-            }
+      // Polyfill para localStorage
+      if (typeof localStorage === 'undefined' || localStorage === null) {
+        window.localStorage = {
+          _data: {},
+          setItem: function(key, value) {
+            this._data[key] = value;
           },
-          writable: false
-        });
+          getItem: function(key) {
+            return this._data[key] || null;
+          },
+          removeItem: function(key) {
+            delete this._data[key];
+          },
+          clear: function() {
+            this._data = {};
+          }
+        };
       }
     </script>
     <!-- Código para lidar com rotas no GitHub Pages -->
