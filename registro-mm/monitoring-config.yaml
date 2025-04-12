@@ -1,0 +1,82 @@
+version: '1.0'
+
+# Configurações de Monitoramento Registro MM
+
+global:
+  project_name: registro-mm
+  environment: production
+
+logging:
+  level: INFO
+  destinations:
+    - file: /var/log/registro-mm/app.log
+    - stdout: true
+  rotation:
+    max_size_mb: 50
+    max_backups: 5
+
+performance_monitoring:
+  enabled: true
+  metrics:
+    - response_time
+    - error_rate
+    - database_query_time
+    - memory_usage
+    - cpu_usage
+
+alerts:
+  email_recipients:
+    - admin@registromm.com
+    - devops@registromm.com
+  
+  thresholds:
+    response_time_ms: 500
+    error_rate_percent: 5
+    memory_usage_percent: 80
+    cpu_usage_percent: 90
+
+external_services:
+  uptime_robot:
+    api_key: ${UPTIME_ROBOT_API_KEY}
+    monitors:
+      - name: Registro MM API
+        url: https://api.registromm.com/health
+        interval: 5  # minutos
+
+  sentry:
+    dsn: ${SENTRY_DSN}
+    environment: production
+    release: 1.0.0
+    traces_sample_rate: 0.2
+
+  prometheus:
+    enabled: true
+    scrape_interval: 15s
+    metrics_path: /metrics
+
+security_monitoring:
+  enabled: true
+  scan_intervals:
+    vulnerability: daily
+    dependency_check: weekly
+  
+  notification_channels:
+    - slack
+    - email
+
+backup_strategy:
+  database:
+    frequency: daily
+    retention_days: 7
+    type: incremental
+
+diagnostic_modes:
+  debug_logging: false
+  performance_tracing: true
+
+notification_preferences:
+  critical_alerts:
+    - email
+    - slack
+  warning_alerts:
+    - email
